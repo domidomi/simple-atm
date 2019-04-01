@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import { Button } from "./UI";
 
+import { Banknotes } from "./";
+
 const StyledMoneyWithdraw = styled.div``;
 
 const AVAILABLE_NOTES = [
@@ -116,18 +118,10 @@ const MoneyWithdraw = () => {
       {isSubmitting && <h2>Submitting</h2>}
 
       {status.waitingForWithdraw && (
-        <div>
-          Please take your banknotes:
-          {banknotes.map(note => {
-            if (note.howMany <= 0) return null;
-            return (
-              <div key={note.id}>
-                {note.value}$ x {note.howMany}
-              </div>
-            );
-          })}
-          <Button clicked={() => withdrawMoney()}>Withdraw</Button>
-        </div>
+        <Banknotes
+          banknotes={banknotes}
+          withdrawMoney={() => withdrawMoney()}
+        />
       )}
 
       {status.error && (
