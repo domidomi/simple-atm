@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { Button } from "./UI";
 
-import { Banknotes } from "./";
+import { Banknotes, ErrorWrapper } from "./";
 
 const StyledMoneyWithdraw = styled.div``;
 
@@ -16,6 +16,7 @@ const AVAILABLE_NOTES = [
 ];
 
 const initialStatus = {
+  isSubmitting: false,
   error: null,
   success: false,
   waitingForWithdraw: false
@@ -24,7 +25,6 @@ const initialStatus = {
 const MoneyWithdraw = () => {
   const [amount, setAmount] = useState(0);
   const [banknotes, setBanknotes] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [status, setStatus] = useState(initialStatus);
 
@@ -56,25 +56,25 @@ const MoneyWithdraw = () => {
       reject(new Error("Unknown exception."));
     });
 
-  const getBanknotes = e => {
+  const handleFormSubmit = e => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setStatus({ ...status, isSubmitting: true });
 
     countBanknotes().then(
       response => {
-        setIsSubmitting(false);
         setBanknotes(response);
         setStatus({
           ...status,
+          isSubmitting: false,
           success: true,
           error: null,
           waitingForWithdraw: true
         });
       },
       error => {
-        setIsSubmitting(false);
         setStatus({
           ...status,
+          isSubmitting: false,
           success: false,
           error,
           waitingForWithdraw: false
@@ -88,7 +88,6 @@ const MoneyWithdraw = () => {
   };
 
   const resetState = () => {
-    setIsSubmitting(false);
     setAmount(null);
     setBanknotes({});
     setStatus({
@@ -98,9 +97,9 @@ const MoneyWithdraw = () => {
 
   return (
     <StyledMoneyWithdraw>
-      <form onSubmit={e => getBanknotes(e)}>
+      <form onSubmit={e => handleFormSubmit(e)}>
         <input
-          disabled={isSubmitting || status.waitingForWithdraw}
+          disabled={status.isSubmitting || status.waitingForWithdraw}
           value={amount === 0 || amount === null ? "" : amount}
           onChange={e => setAmount(e.target.value)}
           placeholder=""
@@ -110,12 +109,12 @@ const MoneyWithdraw = () => {
         />
         <Button
           type="submit"
-          disabled={isSubmitting || status.waitingForWithdraw}
+          disabled={status.isSubmitting || status.waitingForWithdraw}
         >
           Withdraw
         </Button>
       </form>
-      {isSubmitting && <p>Please wait...</p>}
+      {status.isSubmitting && <p>Please wait...</p>}
 
       {status.waitingForWithdraw && (
         <Banknotes
@@ -124,12 +123,7 @@ const MoneyWithdraw = () => {
         />
       )}
 
-      {status.error && (
-        <div>
-          Something went wrong. Please try again.{" "}
-          <span>Error code: {status.error.message}</span>
-        </div>
-      )}
+      {status.error && <ErrorWrapper message={status.error.message} />}
     </StyledMoneyWithdraw>
   );
 };
