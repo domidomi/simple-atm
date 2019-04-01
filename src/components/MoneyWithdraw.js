@@ -118,11 +118,14 @@ const MoneyWithdraw = () => {
       {status.waitingForWithdraw && (
         <div>
           Please take your banknotes:
-          {banknotes.map(note => (
-            <div key={note.id}>
-              {note.name}: {note.howMany}
-            </div>
-          ))}
+          {banknotes.map(note => {
+            if (note.howMany <= 0) return null;
+            return (
+              <div key={note.id}>
+                {note.value}$ x {note.howMany}
+              </div>
+            );
+          })}
           <Button clicked={() => withdrawMoney()}>Withdraw</Button>
         </div>
       )}
