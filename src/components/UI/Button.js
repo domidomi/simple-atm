@@ -22,7 +22,6 @@ const StyledButton = styled.button`
 
 const Button = props => {
   const {disabled, children, clicked} = props;
-  console.log("disabled", disabled);
   return <StyledButton disabled={disabled} onClick={clicked}>{children}</StyledButton>;
 };
 

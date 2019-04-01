@@ -20,8 +20,8 @@ const initialStatus = {
 };
 
 const MoneyWithdraw = () => {
-  const [amount, setAmount] = useState(null);
-  const [banknotes, setBanknotes] = useState(null);
+  const [amount, setAmount] = useState(0);
+  const [banknotes, setBanknotes] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [status, setStatus] = useState(initialStatus);
@@ -62,7 +62,6 @@ const MoneyWithdraw = () => {
       response => {
         setIsSubmitting(false);
         setBanknotes(response);
-        setAmount(null);
         setStatus({
           ...status,
           success: true,
@@ -72,7 +71,6 @@ const MoneyWithdraw = () => {
       },
       error => {
         setIsSubmitting(false);
-        setAmount(null);
         setStatus({
           ...status,
           success: false,
@@ -90,7 +88,7 @@ const MoneyWithdraw = () => {
   const resetState = () => {
     setIsSubmitting(false);
     setAmount(null);
-    setBanknotes(null);
+    setBanknotes({});
     setStatus({
       ...initialStatus
     });
@@ -101,10 +99,9 @@ const MoneyWithdraw = () => {
       <form onSubmit={e => getBanknotes(e)}>
         <input
           disabled={isSubmitting || status.waitingForWithdraw}
-          value={amount}
-          test={amount}
+          value={amount === null ? 0 : amount}
           onChange={e => setAmount(e.target.value)}
-          placeholder="0"
+          placeholder={amount}
           type="number"
           name="amount"
           required
