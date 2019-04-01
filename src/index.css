@@ -10,6 +10,8 @@ body {
 }
 
 code {
+  font-size: 0.9em;
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+  font-style: italic;
 }

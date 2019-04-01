@@ -1,18 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import { MoneyWithdraw } from "../../components";
+import { MoneyWithdraw, Header } from "../../components";
 
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import * as themes from "../../utils/Themes";
 
-import DefaultTheme from "../../utils/Themes";
+const AppWrapper = styled.div`
+  color: ${props => props.theme.textColor};
+  background-color: ${props => props.theme.backgroundColor};
+  padding: 20px;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+`;
 
 const App = () => {
+  const [defaultTheme, setDefaultTheme] = useState(true);
+
   return (
-    <ThemeProvider theme={DefaultTheme}>
-      <div className="app">
-        <h1>Welcome to the Simple ATM!</h1>
+    <ThemeProvider
+      theme={defaultTheme ? themes.DefaultTheme : themes.DarkTheme}
+    >
+      <AppWrapper>
+        <Header switchTheme={() => setDefaultTheme(!defaultTheme)} />
         <MoneyWithdraw />
-      </div>
+      </AppWrapper>
     </ThemeProvider>
   );
 };

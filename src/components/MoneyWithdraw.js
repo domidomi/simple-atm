@@ -8,6 +8,15 @@ import { Banknotes, ErrorWrapper } from "./";
 
 const StyledMoneyWithdraw = styled.div``;
 
+const StyledForm = styled.form`
+  display: flex;
+`;
+
+const StyledInput = styled.input`
+  border-radius: 4px;
+  margin-right: 10px;
+`;
+
 const AVAILABLE_NOTES = [
   { id: 0, value: 10.0, name: "tens" },
   { id: 1, value: 20.0, name: "twenties" },
@@ -97,8 +106,8 @@ const MoneyWithdraw = () => {
 
   return (
     <StyledMoneyWithdraw>
-      <form onSubmit={e => handleFormSubmit(e)}>
-        <input
+      <StyledForm onSubmit={e => handleFormSubmit(e)}>
+        <StyledInput
           disabled={status.isSubmitting || status.waitingForWithdraw}
           value={amount === 0 || amount === null ? "" : amount}
           onChange={e => setAmount(e.target.value)}
@@ -113,7 +122,8 @@ const MoneyWithdraw = () => {
         >
           Withdraw
         </Button>
-      </form>
+      </StyledForm>
+
       {status.isSubmitting && <p>Please wait...</p>}
 
       {status.waitingForWithdraw && (
