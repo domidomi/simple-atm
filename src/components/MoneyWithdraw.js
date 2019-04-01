@@ -101,9 +101,9 @@ const MoneyWithdraw = () => {
       <form onSubmit={e => getBanknotes(e)}>
         <input
           disabled={isSubmitting || status.waitingForWithdraw}
-          value={amount === null ? 0 : amount}
+          value={amount === 0 || amount === null ? "" : amount}
           onChange={e => setAmount(e.target.value)}
-          placeholder={amount}
+          placeholder=""
           type="number"
           name="amount"
           required
@@ -115,7 +115,7 @@ const MoneyWithdraw = () => {
           Withdraw
         </Button>
       </form>
-      {isSubmitting && <h2>Submitting</h2>}
+      {isSubmitting && <p>Please wait...</p>}
 
       {status.waitingForWithdraw && (
         <Banknotes
