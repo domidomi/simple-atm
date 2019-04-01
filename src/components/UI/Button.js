@@ -12,10 +12,17 @@ const StyledButton = styled.button`
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  cursor: pointer;
+
+  &[disabled] {
+    background-color: #ccc;
+    cursor: picker;
+  }
 `;
 
 const Button = props => {
   const {disabled, children, clicked} = props;
+  console.log("disabled", disabled);
   return <StyledButton disabled={disabled} onClick={clicked}>{children}</StyledButton>;
 };
 
